@@ -1,0 +1,13 @@
+stacks:
+- ophan-whatsapp-share
+regions:
+- eu-west-1
+deployments:
+  ophan-whatsapp-share:
+    type: aws-lambda
+    parameters:
+      bucket: ophan-whatsapp-share-dist
+      functions:
+        PROD:
+          name: WhatsApp_Share
+          filename: ophan-whatsapp-share-assembly-0.1.jar
