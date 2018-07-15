@@ -9,5 +9,5 @@ deployments:
       bucket: ophan-dist
       functions:
         PROD:
-          name: WhatsApp_Share
+          name: whatsapp-share
           filename: ophan-whatsapp-share-assembly-0.1.jar
