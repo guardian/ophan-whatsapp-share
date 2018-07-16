@@ -51,7 +51,7 @@ object S3 {
     val metadata = new ObjectMetadata()
     metadata.setContentType("text/html; charset=utf-8")
     metadata.setContentLength(body.getBytes("UTF-8").length)
-    metadata.setCacheControl("no-cache")
+    metadata.setCacheControl("max-age=31536000")
     val request = new PutObjectRequest(bucket, path, new StringInputStream(body), metadata)
       .withCannedAcl(CannedAccessControlList.PublicRead)
     client.putObject(request)
