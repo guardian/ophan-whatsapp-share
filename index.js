@@ -2,7 +2,9 @@
 const today = new Date().toISOString().slice(0, 10) /* YYYY-MM-DD */
 const promises = [];
 const urls = [];
+
 const results = [];
+const jsonRetrieved = []; 
 
 for (var hours = 0; hours < 25; hours++) {
     const prefix = (hours < 10) ? '0' : '';
@@ -21,6 +23,7 @@ urls.forEach((url) => {
      }).then((data) => {
         if (data) {
             Array.prototype.push.apply(results, data.Shares);
+            jsonRetrieved.push(url);
         }
      }) 
   );
@@ -46,7 +49,6 @@ const append = (parent, el) => {
     return parent.appendChild(el); 
 }
 
-
 Promise
   .all(promises) 
   .then(function() {
@@ -54,7 +56,21 @@ Promise
     const aggregated = results.reduce(reducer, {});
     const sorted =  Object.entries(aggregated).sort((a, b) => {return b[1] - a[1] });
   
+
+    const hoursText = createNode('span');
+    const hoursRetrieved = jsonRetrieved
+        .map(url => url.slice(11, -5)) /* remove YYYY-MM-DD- and .json*/
+        .map(hour => Number(hour) + 1 ) /* convert from UTC to London times */
+        .sort((a, b) => (a - b)); 
+
+    hoursText.innerHTML = `${hoursRetrieved.length} hours retrieved: ${hoursRetrieved.join(' ')}`; 
+    append(document.body, hoursText);
     
+    const totalSharesText = createNode('p');
+    const totalShares = sorted.reduce((a, b) => a + b[1], 0);
+    totalSharesText.innerHTML = `Shared today: ${totalShares}`;
+    append(document.body, totalSharesText);
+
     const ul = createNode('ul');
     append(document.body, ul);
 
