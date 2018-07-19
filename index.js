@@ -7,8 +7,15 @@ const results = [];
 const jsonRetrieved = []; 
 
 for (var hours = 0; hours < 25; hours++) {
+
+
+const params = (new URL(document.location)).searchParams;
+const daySpecified = params.get("day"); 
+
+const day = daySpecified === undefined ? today : daySpecified;  
+
     const prefix = (hours < 10) ? '0' : '';
-    const url = today + '-' + prefix + hours.toString() + '.json'
+    const url = day + '-' + prefix + hours.toString() + '.json'
     urls.push(url) 
 }
 
