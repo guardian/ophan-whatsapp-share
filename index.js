@@ -1,15 +1,13 @@
-
-const today = new Date().toISOString().slice(0, 10) /* YYYY-MM-DD */
+const today = new Date().toISOString().slice(0, 10); /* YYYY-MM-DD */
 const promises = [];
 const urls = [];
 
 const results = [];
-const jsonRetrieved = []; 
-
+const jsonRetrieved = [];
 
 
 const params = (new URL(document.location)).searchParams;
-const daySpecified = params.get("day"); 
+const daySpecified = params.get('day');
 
 const day = daySpecified === null ? today : daySpecified;
 
@@ -36,7 +34,6 @@ urls.forEach((url) => {
   );
 });
 
-
 const reducer = (newShares, share) => {
     if (newShares[share.path] == undefined) {
         newShares[share.path] = share.total;
@@ -53,11 +50,11 @@ const createNode = (element) => {
 }
 
 const append = (parent, el) => {
-    return parent.appendChild(el); 
+    return parent.appendChild(el);
 }
 
 Promise
-  .all(promises) 
+  .all(promises)
   .then(function() {
     
     const aggregated = results.reduce(reducer, {});
@@ -68,7 +65,7 @@ Promise
     const hoursRetrieved = jsonRetrieved
         .map(url => url.slice(11, -5)) /* remove YYYY-MM-DD- and .json*/
         .map(hour => Number(hour) + 1 ) /* convert from UTC to London times */
-        .sort((a, b) => (a - b)); 
+        .sort((a, b) => (a - b));
 
     hoursText.innerHTML = `${hoursRetrieved.length} hours retrieved: ${hoursRetrieved.join(' ')}`; 
     append(document.body, hoursText);
@@ -87,6 +84,4 @@ Promise
         append(ul, li);
     });
 
-})  
-
-  
+})
