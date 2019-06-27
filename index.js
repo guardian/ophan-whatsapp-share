@@ -11,7 +11,7 @@ const jsonRetrieved = [];
 const params = (new URL(document.location)).searchParams;
 const daySpecified = params.get("day"); 
 
-const day = daySpecified === undefined ? today : daySpecified;  
+const day = daySpecified === null ? today : daySpecified;
 
 for (var hours = 0; hours < 24; hours++) {
     const prefix = (hours < 10) ? '0' : '';
