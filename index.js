@@ -1,6 +1,5 @@
 const today = new Date().toISOString().slice(0, 10); /* YYYY-MM-DD */
 const promises = [];
-const urls = [];
 
 const results = [];
 const jsonRetrieved = [];
@@ -11,11 +10,17 @@ const daySpecified = params.get('day');
 
 const day = daySpecified === null ? today : daySpecified;
 
-for (var hours = 0; hours < 24; hours++) {
-    const prefix = (hours < 10) ? '0' : '';
-    const url = day + '-' + prefix + hours.toString() + '.json'
-    urls.push(url) 
-}
+const genurls = (day) => {
+    const urls = [];
+    for (var hours = 0; hours < 24; hours++) {
+        const prefix = (hours < 10) ? '0' : '';
+        const url = day + '-' + prefix + hours.toString() + '.json';
+        urls.push(url);
+    }
+    return urls;
+};
+
+const urls = genurls(day);
 
 urls.forEach((url) => {
   promises.push(
@@ -30,7 +35,7 @@ urls.forEach((url) => {
             Array.prototype.push.apply(results, data.Shares);
             jsonRetrieved.push(url);
         }
-     }) 
+     })
   );
 });
 
