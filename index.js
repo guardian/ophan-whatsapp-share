@@ -1,23 +1,26 @@
-
-const today = new Date().toISOString().slice(0, 10) /* YYYY-MM-DD */
+const today = new Date().toISOString().slice(0, 10); /* YYYY-MM-DD */
 const promises = [];
-const urls = [];
 
 const results = [];
-const jsonRetrieved = []; 
-
+const jsonRetrieved = [];
 
 
 const params = (new URL(document.location)).searchParams;
-const daySpecified = params.get("day"); 
+const daySpecified = params.get('day');
 
-const day = daySpecified === undefined ? today : daySpecified;  
+const day = daySpecified === null ? today : daySpecified;
 
-for (var hours = 0; hours < 24; hours++) {
-    const prefix = (hours < 10) ? '0' : '';
-    const url = day + '-' + prefix + hours.toString() + '.json'
-    urls.push(url) 
-}
+const genurls = (day) => {
+    const urls = [];
+    for (var hours = 0; hours < 24; hours++) {
+        const prefix = (hours < 10) ? '0' : '';
+        const url = day + '-' + prefix + hours.toString() + '.json';
+        urls.push(url);
+    }
+    return urls;
+};
+
+const urls = genurls(day);
 
 urls.forEach((url) => {
   promises.push(
@@ -32,10 +35,9 @@ urls.forEach((url) => {
             Array.prototype.push.apply(results, data.Shares);
             jsonRetrieved.push(url);
         }
-     }) 
+     })
   );
 });
-
 
 const reducer = (newShares, share) => {
     if (newShares[share.path] == undefined) {
@@ -53,11 +55,11 @@ const createNode = (element) => {
 }
 
 const append = (parent, el) => {
-    return parent.appendChild(el); 
+    return parent.appendChild(el);
 }
 
 Promise
-  .all(promises) 
+  .all(promises)
   .then(function() {
     
     const aggregated = results.reduce(reducer, {});
@@ -68,7 +70,7 @@ Promise
     const hoursRetrieved = jsonRetrieved
         .map(url => url.slice(11, -5)) /* remove YYYY-MM-DD- and .json*/
         .map(hour => Number(hour) + 1 ) /* convert from UTC to London times */
-        .sort((a, b) => (a - b)); 
+        .sort((a, b) => (a - b));
 
     hoursText.innerHTML = `${hoursRetrieved.length} hours retrieved: ${hoursRetrieved.join(' ')}`; 
     append(document.body, hoursText);
@@ -87,6 +89,4 @@ Promise
         append(ul, li);
     });
 
-})  
-
-  
+})
