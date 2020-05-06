@@ -2,7 +2,7 @@ name := "ophan-whatsapp-share"
 
 version := "0.1"
 
-scalaVersion := "2.12.6"
+scalaVersion := "2.12.11"
 
 scalacOptions := Seq("-unchecked", "-deprecation")
 
