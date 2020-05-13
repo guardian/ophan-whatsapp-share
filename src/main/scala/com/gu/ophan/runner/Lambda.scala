@@ -12,11 +12,11 @@ class Lambda {
     val logger = context.getLogger
     val target = "ophan-whatsapp-share"
 
-    logger.log(s"Starting report at ${DateTime.now}")
+    /*logger.log(s"Starting report at ${DateTime.now}")
     logger.log(s"event: ${event}")
     logger.log(s"records: ${event.getRecords()}")
     logger.log(s"first record: ${event.getRecords().get(0)}")
-    logger.log(s"message: ${event.getRecords().get(0).getSNS().getMessage}")
+    logger.log(s"message: ${event.getRecords().get(0).getSNS().getMessage}")*/
 
     val today = DateTime.now.minusHours(2).withZone(DateTimeZone.forID("Europe/London"))
     val path = today.toString("yyyy-MM-dd-HH").toLowerCase
