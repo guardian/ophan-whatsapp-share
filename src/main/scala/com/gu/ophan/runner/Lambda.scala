@@ -32,13 +32,14 @@ class Lambda {
 
     val month = System.getenv("MONTH")
     val day = System.getenv("DAY")
+    val hour = System.getenv("HOUR")
 
-    if (month != null && day != null) {
-      val hours = List.range(0, 23)
+    if (month != null && day != null && hour != null) {
+      val hours = List.range(0, 3)
       for (h <- hours) {
         val tz = DateTimeZone.forID("Europe/London")
-        val d =  new DateTime(2020, month.toInt, day.toInt, h, 0, tz)
-        logger.log(s"Generate report for ${today.toString("yyyy-MM-dd-HH")}")
+        val d =  new DateTime(2020, month.toInt, day.toInt, hour.toInt + h, 0, tz)
+        logger.log(s"Generate report for ${d.toString("yyyy-MM-dd-HH")}")
         gen(target, d)
         logger.log(s"Ending report at ${DateTime.now}")
       }
