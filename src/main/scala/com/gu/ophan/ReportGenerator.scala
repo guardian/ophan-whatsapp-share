@@ -11,7 +11,7 @@ object ReportGenerator {
     val prefix = """fastly/www.theguardian.com/""" + date.toString("yyyy-MM-dd") + "T" + date.toString("HH")
 
     val logfiles = S3.list(bucket, prefix)
-    val logentries = logfiles.map(logfile => parse(bucket, logfile)).flatten
+    val logentries = logfiles.par.map(logfile => parse(bucket, logfile)).flatten
     val shares: List[Share] = logentries.groupBy(_.path).mapValues(_.length).map{ case (path, sum) => Share(path, sum) }(collection.breakOut).toList.sortBy(_.total)
     generateJsonFromShares(shares)
 
